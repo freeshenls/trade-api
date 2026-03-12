@@ -12,4 +12,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  devise_scope :user do
+    root to: redirect('/login.html')
+  end
 end
