@@ -1,0 +1,103 @@
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title></title>
+<meta content="text/html; charset=UTF-8" http-equiv=Content-Type>
+<meta name="renderer" content="webkit" />
+<link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="/taglib/jquery/jquery-1.11.3.min.js"></script><link rel="stylesheet" type="text/css" href="/taglib/font-awesome-4.7.0/css/font-awesome.css" />
+
+<link rel="stylesheet" type="text/css" href="/taglib/jeasyui/1.5/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="/taglib/jeasyui/1.5/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="/taglib/jeasyui/1.5/themes/color.css" />
+<link rel="stylesheet" type="text/css" href="/taglib/extends/easyuiexpandui.css" />
+<script type="text/javascript" src="/taglib/jeasyui/1.5/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/taglib/jeasyui/1.5/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/taglib/extends/jquery.datagrid.extend.js"></script>
+<script type="text/javascript" src="/taglib/extends/jquery.tabs.extend.js"></script>
+<script type="text/javascript" src="/taglib/extends/jquery.mask.extend.js"></script>
+<script type="text/javascript" src="/taglib/extends/jquery.linkbutton.extend.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/manage/skin/common/home.css?v=" />
+<script type="text/javascript" src="/manage/js/page/query.js?v="></script>
+<script type="text/javascript" src="/taglib/plugins/echarts/echarts.js"></script>
+<script type="text/javascript" src="/manage/js/page/home.jsp.js?v="></script>
+ 
+    <style>
+        /*. .datagrid-header-row td{font-size:24px}*/
+       .datagrid-header span {font-size: 14px !important; }  
+     /*.  datagrid-header-row {   background-color: #e3e3e3;  color: #111   Height: 50px; */   }
+    </style>
+</head>
+
+<body>
+    <div class="page page-with-panels">
+      <main class="page-body">
+        <section class="panel panel-top left fl">
+          <div class="panel-header"><i class="fa  fa-folder font-red"></i> 快捷方式
+          <a class="btn btn-xs btn-warning fr" id="shortcut_setting" href="#" onclick="" title="设置"><i class="fa  fa-cog"></i> 设置</a>
+          </div>
+          <div class="kpi2 kpi-flex">
+
+    <ul id="ShortCut_Show">
+    </ul>
+          </div>
+        </section>        
+        <section class="panel panel-top right fr">
+          <div class="panel-header"><i class="fa  fa-commenting font-red"></i> 关键指标
+         <!--  <a class="btn btn-xs btn-warning fr" href="#" onclick="" title="详细"> 详细 <i class="fa  fa-angle-double-right"></i></a> -->
+          </div>
+		<div class="kpi kpi-flex panel-table" >
+		      <table class="table1 table-noborder  table-modal table-fix ">
+		               <tr id="keyIndicators">
+		
+		               </tr>
+		
+		           </table>
+		
+		</div>
+        </section>
+      
+        <section class="panel panel-bottom has-scroll">
+          <div class="tab-container" role="tabpanel">
+            <div class="tab-content tab-single">
+              <div class="tab-pane left fl">
+                <div class="data-area">
+                   <div class="data-content ">
+                      <div>
+                           <div class="top ">
+                               <div id="container" style="height:100%;width: 100%"></div>
+                           </div>
+                           <div class="bottom ">
+                               <div id="container1" style="height:100%;width: 100%"></div>
+                           </div>
+                       </div>
+                   
+                  </div>  
+                </div>
+             
+              </div>
+              <div class="tab-pane right fr ">
+                <div class="panel-info">
+					<table id="_list" data-options="title:'告警信息',iconCls:'fa fa-exclamation-triangle font-red'">
+					    <tbody id="warninglist">     
+					    </tbody>  					
+				
+					</table>
+                </div>         
+              </div>              
+            </div>
+          </div>
+        </section>
+    
+      </main>
+    </div>
+</body>
+</html>

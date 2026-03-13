@@ -13,34 +13,26 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  authenticated :user do
-    root to: redirect("/index"), as: :index
-  end
-
-  devise_scope :user do
-    root to: redirect('/default')
-  end
-
-  get "default", to: redirect('/default.html')
-  get "index", to: redirect('/default.html')
-  get "ecmsCharge", to: redirect('/ecmsCharge.html')
-  get "queryMenu", to: redirect('/queryMenu.html')
-  get "queryEcmsRecharge", to: redirect('/queryEcmsRecharge.html')
-  get "queryEcmsRecharge3", to: redirect('/queryEcmsRecharge3.html')
   get "manage/home.jsp", to: 'application#normalized', defaults: { file: "home.html" }
-
   get '/manage/*path', to: 'application#normalized'
   get '/taglib/*path', to: 'application#normalized'
 
-  post "login.action;jsessionid=:jsessionid", to: "application#login"
-  post "iface/findEcmsAddressTreeNode2", to: "application#findEcmsAddressTreeNode2"
-  post "iface/findKeyIndicators", to: "application#findKeyIndicators"
-  post "iface/findDailyElectricity", to: "application#findDailyElectricity"
-  post "iface/findMonthElectricity", to: "application#findMonthElectricity"
-  post "iface/searchEcmsShortCut", to: "application#searchEcmsShortCut"
-  post "iface/findEcmsWarnInfo", to: "application#findEcmsWarnInfo"
-  post "iface/searchEcmsPayCustomer3", to: "application#searchEcmsPayCustomer3"
-  post "iface/searchEcmsRecharge", to: "application#searchEcmsRecharge"
-  post "iface/findCustomerTreeNode", to: "application#findCustomerTreeNode"
-  post "iface/findEcmsAddressTreeNode", to: "application#findEcmsAddressTreeNode"
+  authenticated :user do
+    get "logout", to: "application#logout"
+    get "index", to: 'application#normalized', defaults: { file: "index.html" }, format: false
+
+    get "ecmsCharge", to: 'application#normalized', defaults: { file: "ecmsCharge.html" }
+    get "queryMenu", to: 'application#normalized', defaults: { file: "queryMenu.html" }
+    get "queryEcmsRecharge", to: 'application#normalized', defaults: { file: "queryEcmsRecharge.html" }
+    get "queryEcmsRecharge3", to: 'application#normalized', defaults: { file: "queryEcmsRecharge3.html" }
+    get "changePersonalPassword", to: 'application#normalized', defaults: { file: "changePersonalPassword.html" }
+    post "iface/*path", to: "application#do"
+    get "*path", to: redirect('/index')
+  end
+
+  devise_scope :user do
+    post "login.action;jsessionid=:jsessionid", to: "application#login"
+    get "default", to: 'application#normalized', defaults: { file: "default.html" }, format: false
+    get "*path", to: redirect('/default')
+  end
 end

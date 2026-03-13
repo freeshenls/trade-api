@@ -60,3 +60,5 @@ gem "rails-i18n", "~> 8.1"
 gem "seed_dump", "~> 3.4"
 gem "devise", "~> 5.0"
 gem "redis", "~> 5.4"
+
+gem "faraday", "~> 2.14"

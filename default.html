@@ -1,0 +1,403 @@
+
+
+ 
+
+	
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh-CN" class=" js no-touch no-android chrome no-firefox no-iemobile no-ie no-ie10 no-ie11 no-ios">
+<head>
+<title>
+
+展驰电子智慧能耗平台
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+<link rel="shortcut icon" href="/manage/image/favicon.ico" type="image/x-icon" />
+
+<script type="text/javascript" src="/taglib/jquery/jquery-1.11.3.min.js"></script><link rel="stylesheet" type="text/css" href="/taglib/font-awesome-4.7.0/css/font-awesome.css" />
+
+<link rel="stylesheet" type="text/css" href="/taglib/jeasyui/1.5/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="/taglib/jeasyui/1.5/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="/taglib/jeasyui/1.5/themes/color.css" />
+<link rel="stylesheet" type="text/css" href="/taglib/extends/easyuiexpandui.css" />
+<script type="text/javascript" src="/taglib/jeasyui/1.5/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/taglib/jeasyui/1.5/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/taglib/extends/jquery.datagrid.extend.js"></script>
+<script type="text/javascript" src="/taglib/extends/jquery.tabs.extend.js"></script>
+<script type="text/javascript" src="/taglib/extends/jquery.mask.extend.js"></script>
+<script type="text/javascript" src="/taglib/extends/jquery.linkbutton.extend.js"></script>
+
+<!--<base target="mainFrame">--><base href="." target="" >
+<script type="text/javascript" src="/manage/js/lib/jquery.validate.js?v=1773279728488"></script>
+<script type="text/javascript" src="/manage/js/page/login.jsp.js?v=1773279728488"></script>
+<link href="/manage/skin/common/login.css?v=1773279728488"  rel="stylesheet" type="text/css" />
+<script>
+	$(function(){
+		   /*
+		   * 验证验证码以及判断账号密码出现的各种情况的提示信息
+		   * author:刘事成
+		   */
+		  $('#loginAccount1').val($("#loginAccount").val());
+		  $('#saveLoginname1').prop('checked',true);
+		  $('#password1').val($('#password').val());
+		 
+		  $('#validate').hide();
+		  $('#loginMessageDiv').hide();
+		    var message = "";
+		  $("#message").html(message);
+		  if (message && message != ''){
+		  $('#loginMessageDiv').show();
+		  $('#validate').show();
+		  $('#password1').val("");
+		 }
+	  	
+	  	 $('#loginMessageDiv1').hide();
+         $('#loginAccount1').focus(function(){
+             }); 
+         $('#loginAccount1').blur(function(){
+       	  $.ajax({
+           	  url:'queryLoginName?isName='+$('#loginAccount1').val(),
+                 type:'POST',
+				  data:'',
+				  async:'false',
+				  success:function(data,textStatus){
+						var data = eval('('+ data +')');
+						var message = "";
+						if(data.msg == 0){
+								var message = "用户不存在";
+							    $('#loginMessageDiv1').show();
+						    	$("#message1").html(message);
+						    	$('#loginMessageDiv').hide();
+							}else{
+								 $('#loginMessageDiv1').hide();
+								}
+					   		}
+           	  		});
+             		});
+         
+         
+	});
+	  var loginAccount = $("#loginAccount").val();
+	  function checkUser() {
+		  var flag = true;
+		  $("#loginAccount").val($("#loginAccount1").val());
+		  $("#password").val($("#password1").val());
+		  var pageCode = $("#code").val();
+		  $.ajax({
+			  url:"queryCode",
+			  type:'POST',
+			  async:false,
+			  data:"",
+			  success:function(data, textStatus) {
+				  var json = eval("(" + data + ")");
+				   JsonMsg = json.msg;
+				  var message = "";
+	    		  $("#message").html(message);
+	    		  $("#loginAccount").val($("#loginAccount1").val());
+	    		  $("#password").val($("#password1").val());
+				  if (message && message != ''){
+					   	  if(pageCode == json.msg) {
+					   		 $('#loginMessageDiv').hide();
+							  flag = true;
+						  }else{
+							  $(".validate").click();
+							  $("#message").html("验证码错误"); 
+						      $('#loginMessageDiv').show();
+							  flag = false;
+						  } 
+				  }else{
+					   $("#code").val(JsonMsg);
+					   return JsonMsg;
+				   }
+				/*   if(pageCode == json.msg) {
+					  alert("4")
+					  flag = true;
+				  }else{
+					  alert("5")
+					  $(".validate").click();
+					  $("#message").html("验证码错误"); 
+				      $('#loginMessageDiv').show();
+					  flag = false;
+				  } */
+			   }
+		  });
+		  return flag;
+	  }
+	 
+	  
+	
+	  
+	  /*
+	   * 判断浏览器是否支持 placeholder属性
+	   * author:刘事成
+	   */
+    function isPlaceholder(){
+        var input = document.createElement('input');
+        return 'placeholder' in input;
+    }
+
+    if (!isPlaceholder()) {//不支持placeholder 用jquery来完成
+        $(document).ready(function() {
+            if(!isPlaceholder()){
+                $("input").not("input[type='password']").each(//把input绑定事件 排除password框
+                        function(){
+                            if($(this).val()=="" && $(this).attr("placeholder")!=""){
+                                $(this).val($(this).attr("placeholder"));
+                                $(this).focus(function(){
+                                    if($(this).val()==$(this).attr("placeholder")) $(this).val("");
+                                });
+                                $(this).blur(function(){
+                                    if($(this).val()=="") $(this).val($(this).attr("placeholder"));
+                                });
+                            }
+                        });
+                //对password框的特殊处理1.创建一个text框 2获取焦点和失去焦点的时候切换
+                var pwdField    = $("input[type=password]");
+                var pwdVal = pwdField.attr('placeholder')== "密码"?$('#passwd1').text(""):pwdField.attr('placeholder',"");
+                pwdField.after('<input id="pwdPlaceholder" type="text" value="密码" autocomplete="off" class="qc-log-input-text lg J-password"/>');
+                var pwdPlaceholder = $('#pwdPlaceholder');
+                pwdField.hide();
+                if( $('#password1').val() !=""){
+                	$('#pwdPlaceholder').hide();
+                	pwdField.show();
+                }
+                pwdPlaceholder.focus(function(){
+                    pwdPlaceholder.hide();
+                    pwdField.show();
+                    pwdField.focus();
+                });
+
+                pwdField.blur(function(){
+                    if(pwdField.val() == '') {
+                        pwdPlaceholder.show();
+                        pwdField.hide();
+                    }
+                });
+               
+
+            }
+        });
+
+    }
+    
+    function checkbox(){
+		  if($('#saveLoginname1').prop('checked')){
+			  $('#saveLoginname').val("true");
+			  $('#login').attr('autocomplete','on');
+	  }
+		  else if($('#saveLoginname1').prop('checked') != true){
+			  $('#saveLoginname').val("false");
+			  $('#login').attr('autocomplete','off');
+	  }
+}
+	  $(document).keyup(function(event){
+		  if(event.keyCode ==13){
+			$('#loginBtn').click();
+		  }
+		});
+   /*  $(function(){
+    	
+       			 }); */
+</script>
+
+ 
+</head>
+<body> 
+
+    <div class="logo-bg">
+        <img src="/manage/skin/common/img/login_bg01.jpg" style="top:0px;"/>
+    </div>
+    <div class="login-body">
+        <div class="login-wrapper" >
+            <div class="login-inner">
+                <div class="lg-aside">
+						<div class="lg-aside-event-tit1">
+							
+							<div class="lg-aside-event-icon1">
+								<img src="/manage/skin/common/img/phone-48.png" alt=""/>
+							</div>
+							<h2>
+								
+									
+								服务热线：0315-2331332
+							</h2>
+						</div>				
+	                    <div class="lg-logo">
+	                    	<a>
+			                  
+				              
+				                  <i class="lg-logo-icon" style="background-image: url(/manage/skin/common/img/icon-logo.png);width:110px;"></i>
+				              
+								<h2 style="margin-left: 20px;">
+									
+									
+									展驰电子智慧能耗平台
+								</h2>
+		    				  
+		    				  
+	                    	  						
+	                        </a>
+	                        <span id="after"></span>
+	                    </div>
+	                    <div class="lg-aside-event">
+							<div class="lg-aside-event-tit">
+								<div class="lg-aside-event-icon">
+									<img src="/manage/skin/common/img/icon.svg" alt=""/>
+								</div>
+								<h2>
+									能耗云，降低企业运行成本
+								</h2>
+							</div>
+						<div class="lg-aside-event-con">
+								<div class="lg-aside-event-txt">
+									<icon class="lg-aside-event-txt-icon"></icon>
+									<span>智能抄表、远程费控</span>
+								</div>
+								<div class="lg-aside-event-txt">
+									<icon class="lg-aside-event-txt-icon"></icon>
+									<span>便捷支付、数据安全</span>
+								</div>
+								<div class="lg-aside-event-txt">
+									<icon class="lg-aside-event-txt-icon"></icon>
+									<span>管理高效、免费升级</span>
+								</div>
+						</div>
+					</div>
+                </div>
+                <div class="lg-content">
+                    <div class="qc-pt-login-content" >
+                    <div class="qc-pt-login-content J-commonLoginContent ">    
+						<!--login start-->  
+						<div class="login-tab">      
+						<h1 class="login-tab-title J-txtLoginTitle">平台登录</h1>      
+						<!--邮箱手机登录　start-->   
+						<div class="login-box J-loginContentBox J-qcloginBox" style="">    
+							<div class="login-form"> 
+						<form id="login" name="login" action="/login.action;jsessionid=177BC6D0042BD43F14AC6507D44D5D7D" method="post" autocomplete="on">
+<table class="wwFormTable">
+						<table class="wwFormTable">
+							<tr>
+						  		<td>
+									<tr style="display:none;">
+  <td colspan="2">
+<input type="hidden" name="message" value="" id="login_message"/>  </td>
+</tr>
+
+			    	 				
+									 <input type="hidden" name="password" id="password" value="" />   
+									 <tr style="display:none;">
+  <td colspan="2">
+<input type="hidden" name="loginAccount" value="" id="loginAccount"/>  </td>
+</tr>
+
+	                		 		 <input type="hidden" name="saveLoginname" id="saveLoginname"  value="true" />
+             		 			</td>
+             		 		 </tr>
+           		 		 </table>
+               		 		 <div  id="loginMessageDiv" class="tc-msg error" style="display:none">
+                		 		 <span class="msg-icon"></span>
+                		 		   <div class="tip-info J-loginTip" >                       
+								<label id="message" class="tRed_12n"></label> 
+								   </div> 
+						    </div>
+						    <div  id="loginMessageDiv1" class="tc-msg error"  style="display:none">
+                		 		 <span class="msg-icon"></span>
+                		 		   <div class="tip-info J-loginTip" >                       
+								<label id="message1" class="tRed_12n"></label> 
+								   </div> 
+						    </div>
+								<ul class="form-list">     
+									<li>       
+									<div class="form-input">        
+									<div class="form-unit tip-unit">  
+									<input type="text"  value="" class="qc-log-input-text lg J-username" placeholder="登录帐号" name="loginAccount1" id="loginAccount1"/>        
+									</div> 
+									</div>      
+									</li>      
+									<li>       
+									<div class="form-input">        
+									<div class="form-unit">  
+									<input type="password" class="qc-log-input-text lg J-password" placeholder="密码" name="password1" id="password1"/>        
+									</div> 
+									<div style="display:none;">
+	                    			<input type="submit" value="登   录" id="loginBtn" name="submit" title="登   录 " onclick="return checkUser(); "/>
+
+									</div>      
+									</div>      
+									</li>      
+								</ul>
+						</table></form>
+
+
+ 
+								<ul class="form-list">
+									<li style="" class="J-vcodeArea">       
+									<div class="form-input fm-security">        
+									<div class="form-unit" id="validate">         
+									<input type="text"  name="code" id="code" class="qc-log-input-text J-vcodeInput" placeholder="验证码"  style="width:124px"/> 
+									<a href="javascript:;" class="security-num J-changeVCode">          
+									<img  id="confirmationImg"  class="security-img J-vcodeImg validate"/>
+									</a>
+									</div>
+									</div> 
+									</li>     
+								</ul>  
+							</div>
+							<div class="op-btn">
+								<div class="psw-info" style="padding-bottom: 20px"> 
+									<label class="checkbox form-ctrl-label">	
+										<input type="checkbox" name="saveLoginname1" value="true" id="saveLoginname1" onclick="checkbox()"/><input type="hidden" id="__checkbox_saveLoginname1" name="__checkbox_saveLoginname1" value="true" />记住密码
+									</label>	
+									
+							
+										 
+								</div> 	
+								<input type="button" value="登 录" class="qc-log-btn J-loginBtn"  onclick="$('#loginBtn').click();"/>     
+							</div>  
+							<a href="https://zzlz.gsxt.gov.cn/businessCheck/verifKey.do?showType=p&serial=91130293MA08BQJP00-SAIC_SHOW_10000091130293MA08BQJP001597807248671&signData=MEUCIQCiT4yIdeLxMcwA3ta39gWOtqcbtBiSwHG2Ix1A9KXHyQIgRlw9ic349hCU57F+a4joWhzKEfpJurRVms/kTlfpurY=" target="_blank" class="en ">
+								<img src="/manage/skin/common/img/dzylzz.jpg" style="width:50px;margin-bottom: 15px;">
+							</a>							
+						</div>   <!--邮箱手机登录 end-->        
+						</div>  <!--login end-->   
+					</div>
+					</div>
+                </div>
+				
+				
+				
+				
+            </div>
+
+			<div class="lg-footer">
+				<div class="lg-footer-inner">
+				<div class="switch" >
+					<p class="tag-line J-loginLanguage">
+			
+						
+						<span class="stick"></span>
+						<a href="https://beian.miit.gov.cn" target="_blank" class="en ">
+							
+							冀ICP备18038688号-1
+						</a>
+					</p>
+				</div>
+
+				<div class="copyright">
+					<p class="tag-line">
+				
+						
+						<span>2017-2020 © Copyright. 唐山展驰电子有限公司 - All Rights Reserved.</span>
+						
+					</p>
+				</div>
+				</div>
+			</div>
+        </div>
+    </div>
+
+</body></html>
